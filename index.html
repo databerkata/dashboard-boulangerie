@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DATA BERKATA — Dashboard Operasi Boulangerie & Brasserie</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' rx='46' fill='%230B1017'/%3E%3Cpath d='M42 44 h116 a14 14 0 0 1 14 14 v70 a14 14 0 0 1 -14 14 h-66 l-28 26 v-26 h-22 a14 14 0 0 1 -14 -14 v-70 a14 14 0 0 1 14 -14 z' fill='none' stroke='%23C9A961' stroke-width='9' stroke-linejoin='round'/%3E%3Cg stroke-linecap='round' stroke-width='11'%3E%3Cline x1='66' y1='120' x2='66' y2='104' stroke='%238C8577'/%3E%3Cline x1='89' y1='120' x2='89' y2='90' stroke='%231D9E75'/%3E%3Cline x1='112' y1='120' x2='112' y2='76' stroke='%23C9A961'/%3E%3Cline x1='135' y1='120' x2='135' y2='62' stroke='%23EBD79C'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --flour:#F4EFE4;      /* tepung / limestone */
+    --paper:#FCF8F0;
+    --ink:#10302E;        /* oven charcoal */
+    --ink-2:#4C5C58;
+    --mute:#8C9490;
+    --line:#DED5C4;
+    --line-2:#C6BCA6;
+    --beurre:#C9A24B;     /* mentega */
+    --confiture:#B23A2E;  /* selai / bahaya */
+    --pistache:#3F8F6B;   /* aman */
+    --zinc:#7C8B88;       /* meja zinc / kanal */
+    --teal:#17827A;       /* fasad */
+    --teal-dk:#0E5B56;
+    --crust:#17827A;
+    --r:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--flour);color:var(--ink);font-family:'Karla',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;padding-bottom:60px;
+    background-image:radial-gradient(900px 500px at 100% -5%, rgba(23,130,122,.16), transparent 60%);
+    min-height:100vh;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .wrap{max-width:1380px;margin:0 auto;padding:0 20px}
+  button{font-family:inherit;cursor:pointer}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:60;background:rgba(244,239,228,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2)}
+  .hd{display:flex;align-items:center;gap:14px;padding:14px 0;flex-wrap:wrap}
+  .brand{margin-right:auto;display:flex;align-items:center;gap:13px}
+  .awning{height:8px;background:repeating-linear-gradient(90deg,var(--teal) 0 22px,var(--paper) 22px 44px)}
+  .byline{display:inline-flex;align-items:center;gap:8px;background:#0B1017;border:1px solid #24303C;
+    padding:5px 10px 5px 6px;border-radius:4px;white-space:nowrap;text-decoration:none}
+  .byline .bt{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;line-height:1.35}
+  .byline .bt i{display:block;color:#7E8B99;font-style:normal;font-size:8px;letter-spacing:.2em}
+  .byline .bt b{color:#EDF2F8;font-weight:600}
+  .byline .bt b em{color:#C9A961;font-style:normal}
+  .byline:hover{border-color:#C9A961}
+  .lockup{display:flex;align-items:center;justify-content:center;gap:16px;background:#0B1017;border-radius:8px;
+    padding:18px 26px;margin:26px auto 0;max-width:430px}
+  .lockup .lt{font-family:'IBM Plex Mono',monospace;line-height:1.5}
+  .lockup .lt b{display:block;font-size:16px;letter-spacing:.28em;color:#EDF2F8;font-weight:600}
+  .lockup .lt b em{color:#C9A961;font-style:normal}
+  .lockup .lt span{display:block;font-size:8.5px;letter-spacing:.24em;color:#7E8B99;margin-top:6px;
+    border-top:1px solid #24303C;padding-top:6px}
+  .mark{width:44px;height:44px;border-radius:9px;display:grid;place-items:center;overflow:hidden}
+  .mark svg{display:block;border-radius:9px}
+  .brand h1{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:17px;letter-spacing:.24em;line-height:1;color:var(--ink)}
+  .brand h1 em{font-style:normal;color:#B08D3E}
+  .brand span{display:block;font-size:10px;color:var(--mute);letter-spacing:.22em;text-transform:uppercase;margin-top:5px}
+  .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--paper);
+        padding:7px 12px;border-radius:2px;font-size:12px;color:var(--ink-2)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--pistache);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,143,107,.5)}70%{box-shadow:0 0 0 7px rgba(63,143,107,0)}100%{box-shadow:0 0 0 0 rgba(63,143,107,0)}}
+  .btn{border:1px solid var(--ink);background:transparent;color:var(--ink);padding:8px 14px;border-radius:2px;font-size:12.5px;transition:.14s}
+  .btn:hover{background:var(--ink);color:var(--flour)}
+  select,input[type=text]{background:var(--paper);border:1px solid var(--line-2);color:var(--ink);border-radius:2px;
+    padding:8px 10px;font-family:inherit;font-size:12.5px}
+  input[type=text]{width:100%}
+  :focus-visible{outline:2px solid var(--beurre);outline-offset:2px}
+
+  /* OUTLET BAR */
+  .outlets{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+  .outlets::-webkit-scrollbar{display:none}
+  .ot{white-space:nowrap;border:1px solid var(--line-2);background:var(--paper);padding:7px 13px;border-radius:2px;
+      font-size:12.5px;color:var(--ink-2);transition:.14s}
+  .ot:hover{border-color:var(--ink)}
+  .ot.on{background:var(--ink);color:var(--flour);border-color:var(--ink)}
+  .ot small{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.65;margin-left:7px}
+  nav{display:flex;gap:2px;overflow-x:auto;border-top:1px solid var(--line);padding-top:8px;padding-bottom:10px;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  .tab{white-space:nowrap;border:none;background:transparent;color:var(--mute);padding:8px 13px;font-size:12.5px;
+       font-weight:600;letter-spacing:.02em;border-bottom:2px solid transparent;transition:.14s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--ink);border-bottom-color:var(--beurre)}
+
+  /* CARDS */
+  .grid{display:grid;gap:14px}
+  .kpis{grid-template-columns:repeat(6,1fr);margin:20px 0 16px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px;position:relative;overflow:hidden}
+  .card h3{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:9px}
+  .kpi .val{font-family:'Fraunces',serif;font-weight:600;font-size:27px;letter-spacing:-.01em;line-height:1.05}
+  .kpi .sub{display:flex;gap:6px;margin-top:6px;font-size:11.5px;color:var(--mute)}
+  .up{color:var(--pistache);font-weight:600} .down{color:var(--confiture);font-weight:600}
+  .spark{position:absolute;right:0;bottom:0;opacity:.55}
+  .cols{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .sect-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .sect-h h2{font-family:'Fraunces',serif;font-weight:600;font-size:17px;letter-spacing:.01em}
+  .sect-h p{font-size:11.5px;color:var(--mute);max-width:520px}
+
+  /* SIGNATURE — LE FOURNIL (rak proofing) */
+  .fournil{background:var(--paper);border:1px solid var(--line-2);border-radius:var(--r);padding:18px;
+    background-image:repeating-linear-gradient(90deg,transparent 0 46px,rgba(198,188,166,.30) 46px 47px)}
+  .rack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .tray{border:1px solid var(--line-2);border-radius:6px;background:var(--flour);padding:13px;position:relative;overflow:hidden}
+  .tray.low{border-color:var(--confiture);box-shadow:inset 0 0 0 1px rgba(178,58,46,.28)}
+  .tray .nm{font-family:'Fraunces',serif;font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center}
+  .tray .fr{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+  .tray .nums{display:flex;gap:14px;margin:11px 0 9px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-2)}
+  .tray .nums b{display:block;font-size:17px;color:var(--ink);font-weight:600}
+  .st{height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
+  .st i{display:block;height:100%}
+  .tray-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px;font-size:11px;color:var(--mute)}
+  .bake{border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:'IBM Plex Mono',monospace;
+    font-size:10px;padding:4px 8px;border-radius:2px;text-transform:uppercase;letter-spacing:.08em}
+  .bake:hover{background:var(--beurre);border-color:var(--beurre);color:#fff}
+  @keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+  .tray.fresh{animation:rise .5s ease}
+
+  /* TICKER order */
+  .ticker{display:flex;gap:9px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+  .ticker::-webkit-scrollbar{display:none}
+  .tk{flex:0 0 auto;border:1px solid var(--line);background:var(--flour);border-radius:4px;padding:8px 11px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;animation:rise .4s ease;white-space:nowrap}
+  .tk b{color:var(--crust)}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:700;
+     padding:8px 9px;border-bottom:1px solid var(--line-2)}
+  td{padding:10px 9px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--flour)}
+  .num{font-family:'IBM Plex Mono',monospace;text-align:right}
+  .tag{font-size:9.5px;padding:3px 7px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  .tag.star{background:rgba(201,162,75,.18);color:#8A6A1E}
+  .tag.plow{background:rgba(63,143,107,.16);color:var(--pistache)}
+  .tag.puzz{background:rgba(124,139,136,.18);color:var(--zinc)}
+  .tag.dog{background:rgba(178,58,46,.14);color:var(--confiture)}
+  .bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:99px}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11.5px;color:var(--ink-2)}
+  .legend b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+  .chips{display:flex;gap:5px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line-2);background:var(--paper);color:var(--ink-2);font-size:11.5px;padding:6px 11px;border-radius:2px}
+  .chip.on{background:var(--beurre);border-color:var(--beurre);color:#fff;font-weight:600}
+  .alert{display:flex;gap:10px;padding:10px 12px;border-radius:4px;background:var(--flour);border-left:3px solid var(--beurre);font-size:12.5px;margin-bottom:8px}
+  .alert.crit{border-left-color:var(--confiture)}
+  .alert.ok{border-left-color:var(--pistache)}
+  .alert small{color:var(--mute);display:block;margin-top:2px;font-size:11px}
+  .panel{display:none} .panel.on{display:block}
+  .tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--flour);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;padding:6px 9px;border-radius:3px;opacity:0;transition:opacity .12s;z-index:99;white-space:nowrap}
+  .foot{color:var(--mute);font-size:11.5px;margin-top:26px;text-align:center;line-height:1.9}
+  @media (max-width:1080px){.kpis{grid-template-columns:repeat(3,1fr)}.cols,.cols3{grid-template-columns:1fr}.rack{grid-template-columns:1fr 1fr}}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}.rack{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="awning"></div>
+  <div class="wrap">
+    <div class="hd">
+      <div class="brand">
+        <div class="mark"><svg viewBox="0 0 200 200" width="44" height="44" aria-hidden="true">
+          <rect width="200" height="200" rx="46" fill="#0B1017"/>
+          <path d="M42 44 h116 a14 14 0 0 1 14 14 v70 a14 14 0 0 1 -14 14 h-66 l-28 26 v-26 h-22 a14 14 0 0 1 -14 -14 v-70 a14 14 0 0 1 14 -14 z" fill="none" stroke="#C9A961" stroke-width="9" stroke-linejoin="round"/>
+          <g stroke-linecap="round" stroke-width="11">
+            <line x1="66" y1="120" x2="66" y2="104" stroke="#8C8577"/>
+            <line x1="89" y1="120" x2="89" y2="90" stroke="#1D9E75"/>
+            <line x1="112" y1="120" x2="112" y2="76" stroke="#C9A961"/>
+            <line x1="135" y1="120" x2="135" y2="62" stroke="#EBD79C"/>
+          </g>
+        </svg></div>
+        <div><h1>DATA <em>BERKATA</em></h1><span>Boulangerie · Pâtisserie · Brasserie — Live Ops</span></div>
+      </div>
+      <div class="pill"><span class="dot"></span><span id="srcLabel">Live · Simulasi POS</span></div>
+      <div class="pill"><span class="mono" id="clock">--:--:--</span> WIB</div>
+      <select id="speed" title="Kecepatan simulasi">
+        <option value="1">Kecepatan 1×</option><option value="2">2×</option><option value="4">4×</option><option value="0">Jeda</option>
+      </select>
+      <button class="btn" id="refresh">↻ Refresh</button>
+    </div>
+    <div class="outlets" id="outlets"></div>
+    <nav id="nav">
+      <button class="tab on" data-p="ops">Live Ops</button>
+      <button class="tab" data-p="prod">Produksi & Sell-Through</button>
+      <button class="tab" data-p="net">Jaringan Outlet</button>
+      <button class="tab" data-p="menu">Menu Engineering</button>
+      <button class="tab" data-p="cost">Bahan, Butter Index & COGS</button>
+      <button class="tab" data-p="crew">Kru & Shift</button>
+      <button class="tab" data-p="data">Sumber Data</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid kpis" id="kpis"></section>
+
+  <!-- LIVE OPS -->
+  <div class="panel on" id="p-ops">
+    <div class="fournil">
+      <div class="sect-h">
+        <div><h2>LE FOURNIL — Rak Produksi Hari Ini</h2>
+        <p>Viennoiserie & roti punya umur simpan satu hari. Yang diukur bukan “terjual berapa”, tapi <b>sell-through</b>: berapa persen yang dipanggang benar-benar habis sebelum tutup. Klik <b>Bake</b> untuk menambah fournée susulan.</p></div>
+        <div class="chips"><span class="chip mono" id="nextBake">Fournée berikut —</span></div>
+      </div>
+      <div class="rack" id="rack"></div>
+      <div class="legend">
+        <span><b style="background:var(--crust)"></b>Terjual</span>
+        <span><b style="background:var(--beurre)"></b>Sisa di rak</span>
+        <span><b style="background:var(--line)"></b>Belum dipanggang (kapasitas par)</span>
+        <span style="color:var(--confiture)">Merah = sisa &lt; 15% menjelang jam ramai → risiko kehabisan</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>Order masuk (live)</h3>
+      <div class="ticker" id="ticker"></div>
+    </div>
+
+    <div class="cols" style="margin-top:14px">
+      <div class="card">
+        <div class="sect-h"><div><h2>OMZET PER JAM</h2><p>Kurva boulangerie: puncak pagi 07–11, bukan malam.</p></div>
+          <div class="legend" style="margin:0">
+            <span><b style="background:var(--beurre)"></b>Hari ini</span><span><b style="background:var(--line-2)"></b>Rata-rata 7 hari</span></div>
+        </div>
+        <div id="hourly"></div>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>KESEHATAN OPERASI</h2><p>Ambang batas harian</p></div></div>
+        <div id="health"></div>
+      </div>
+    </div>
+
+    <div class="cols3" style="margin-top:14px">
+      <div class="card"><h3>Kanal Penjualan</h3><div id="channel"></div></div>
+      <div class="card"><h3>Meja & Okupansi</h3><div id="tables"></div></div>
+      <div class="card"><h3>Notifikasi</h3><div id="alerts"></div></div>
+    </div>
+  </div>
+
+  <!-- PRODUKSI -->
+  <div class="panel" id="p-prod">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>SELL-THROUGH vs WASTE PER ITEM</h2>
+        <p>Target sell-through ≥ 92%. Di bawah itu = overbake (rugi bahan). Di atas 99% berulang = underbake (kehilangan penjualan).</p></div></div>
+        <table id="prodTable"></table>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>REKOMENDASI FOURNÉE BESOK</h2><p>Dihitung dari rata-rata 7 hari + sell-through hari ini</p></div></div>
+        <div id="planner"></div>
+      </div>
+    </div>
+    <div class="cols3" style="margin-top:14px">
+      <div class="card"><h3>Kurva penjualan pastry per jam</h3><div id="pastryCurve"></div></div>
+      <div class="card"><h3>Nilai waste 7 hari</h3><div id="wasteWeek"></div></div>
+      <div class="card"><h3>Kebijakan diskon sore</h3><div id="discount"></div></div>
+    </div>
+  </div>
+
+  <!-- JARINGAN -->
+  <div class="panel" id="p-net">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>PERBANDINGAN OUTLET</h2><p>Semua angka hari ini. Klik baris untuk fokus ke outlet tersebut.</p></div></div>
+        <table id="netTable"></table>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>OMZET 7 HARI — JARINGAN</h2><p>Termasuk proyeksi bulan berjalan</p></div></div>
+        <div id="week"></div>
+        <div id="heatmap" style="margin-top:18px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="panel" id="p-menu">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>MATRIKS MENU ENGINEERING</h2><p>X = porsi terjual · Y = margin kontribusi per porsi. Arahkan kursor ke titik.</p></div></div>
+        <div id="quad"></div>
+        <div class="legend">
+          <span><b style="background:var(--beurre)"></b>Star — laris, margin tebal</span>
+          <span><b style="background:var(--pistache)"></b>Plowhorse — laris, margin tipis</span>
+          <span><b style="background:var(--zinc)"></b>Puzzle — margin tebal, kurang laris</span>
+          <span><b style="background:var(--confiture)"></b>Dog — kandidat coret</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>PERFORMA ITEM</h2><p>Urut kontribusi margin</p></div></div>
+        <div style="max-height:470px;overflow:auto"><table id="menuTable"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COST -->
+  <div class="panel" id="p-cost">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>BUTTER & FLOUR INDEX</h2>
+        <p>Butter Eropa dibeli dalam EUR. Kurs naik → COGS croissant naik tanpa kenaikan harga jual. Geser slider untuk uji dampaknya.</p></div></div>
+        <div id="butter"></div>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>STOK vs PAR LEVEL</h2><p>Par = stok aman 2 hari produksi</p></div></div>
+        <table id="stockTable"></table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="sect-h"><div><h2>COGS PER KATEGORI</h2><p>Target blended ≤ 32%</p></div></div>
+      <div id="cogs"></div>
+    </div>
+  </div>
+
+  <!-- CREW -->
+  <div class="panel" id="p-crew">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>PAPAN SHIFT</h2><p>Baker masuk 02:00 — biaya kru boulangerie selalu lebih berat dari kafe biasa.</p></div></div>
+        <table id="crewTable"></table>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>PRODUKTIVITAS TENAGA KERJA</h2><p>Target labor cost ≤ 24% omzet</p></div></div>
+        <div id="labor"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA -->
+  <div class="panel" id="p-data">
+    <div class="cols">
+      <div class="card">
+        <div class="sect-h"><div><h2>HUBUNGKAN GOOGLE SHEETS</h2><p>File → Share → Publish to web → pilih sheet → format CSV → tempel link.</p></div></div>
+        <p style="font-size:12.5px;color:var(--ink-2);margin-bottom:9px">Header baris 1 (huruf kecil):</p>
+        <div class="mono" style="background:var(--flour);border:1px solid var(--line-2);border-radius:4px;padding:12px;font-size:11.5px;overflow:auto;margin-bottom:13px">
+          timestamp,outlet,channel,item,qty,price,cost,payment<br>
+          2026-07-13 08:14,Senopati,Takeaway,Croissant,3,32000,9800,QRIS
+        </div>
+        <input type="text" id="csvUrl" placeholder="https://docs.google.com/spreadsheets/d/e/..../pub?output=csv">
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn" id="connect">Hubungkan</button>
+          <button class="btn" id="disconnect">Kembali ke simulasi</button>
+          <select id="interval">
+            <option value="30">Auto-refresh 30 detik</option>
+            <option value="60" selected>Auto-refresh 60 detik</option>
+            <option value="300">Auto-refresh 5 menit</option>
+            <option value="0">Manual saja</option>
+          </select>
+        </div>
+        <div id="connStatus" style="margin-top:13px"></div>
+      </div>
+      <div class="card">
+        <div class="sect-h"><div><h2>STATUS INTEGRASI</h2><p>Sumber yang menyuplai dashboard</p></div></div>
+        <div id="integrations"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="awning" style="margin-top:34px;border-radius:2px"></div>
+  <p class="foot">Dashboard operasi boulangerie multi-outlet · data simulasi berjalan otomatis sampai Google Sheets dihubungkan.<br>
+  Semua nilai dalam Rupiah · jam operasional 07:00–21:00 WIB · fournée 05:00 / 09:30 / 13:30.<br>
+</p>
+  <div class="lockup"><svg viewBox="0 0 200 200" width="44" height="44" aria-hidden="true">
+  <rect width="200" height="200" rx="46" fill="#0B1017"/>
+  <path d="M42 44 h116 a14 14 0 0 1 14 14 v70 a14 14 0 0 1 -14 14 h-66 l-28 26 v-26 h-22 a14 14 0 0 1 -14 -14 v-70 a14 14 0 0 1 14 -14 z" fill="none" stroke="#C9A961" stroke-width="9" stroke-linejoin="round"/>
+  <g stroke-linecap="round" stroke-width="11">
+    <line x1="66" y1="120" x2="66" y2="104" stroke="#8C8577"/>
+    <line x1="89" y1="120" x2="89" y2="90" stroke="#1D9E75"/>
+    <line x1="112" y1="120" x2="112" y2="76" stroke="#C9A961"/>
+    <line x1="135" y1="120" x2="135" y2="62" stroke="#EBD79C"/>
+  </g>
+</svg><span class="lt"><b>DATA <em>BERKATA</em></b>
+    <span>INTERACTIVE BUSINESS DASHBOARDS</span></span></div>
+</main>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ================= MASTER DATA ================= */
+const OUTLETS=[
+  {id:'sen', n:'Senopati',  city:'Jakarta', seats:48, staff:11},
+  {id:'kem', n:'Kemang',    city:'Jakarta', seats:56, staff:12},
+  {id:'pik', n:'PIK Avenue',city:'Jakarta', seats:38, staff:9 },
+  {id:'sem', n:'Seminyak',  city:'Bali',    seats:64, staff:14},
+  {id:'cgg', n:'Canggu',    city:'Bali',    seats:52, staff:12},
+  {id:'ubd', n:'Ubud',      city:'Bali',    seats:44, staff:10},
+];
+const MENU=[
+  {id:'crs', n:'Croissant Beurre',   c:'Viennoiserie', price:32000, cost:9800,  base:46, bakery:true, par:180},
+  {id:'pac', n:'Pain au Chocolat',   c:'Viennoiserie', price:38000, cost:12400, base:34, bakery:true, par:130},
+  {id:'alm', n:'Almond Croissant',   c:'Viennoiserie', price:45000, cost:16200, base:22, bakery:true, par:80 },
+  {id:'kam', n:'Kouign-Amann',       c:'Viennoiserie', price:42000, cost:14100, base:13, bakery:true, par:55 },
+  {id:'sdo', n:'Sourdough Loaf',     c:'Boulangerie',  price:68000, cost:19500, base:15, bakery:true, par:60 },
+  {id:'bag', n:'Baguette Tradition', c:'Boulangerie',  price:32000, cost:8200,  base:18, bakery:true, par:70 },
+  {id:'qui', n:'Quiche Lorraine',    c:'Brasserie',    price:78000, cost:28400, base:12},
+  {id:'ben', n:'Eggs Benedict',      c:'Brasserie',    price:95000, cost:34500, base:16},
+  {id:'avo', n:'Avocado Toast',      c:'Brasserie',    price:88000, cost:29000, base:14},
+  {id:'brk', n:'Big Breakfast',      c:'Brasserie',    price:125000,cost:48000, base:9 },
+  {id:'flw', n:'Flat White',         c:'Café',         price:45000, cost:11200, base:40},
+  {id:'cap', n:'Cappuccino',         c:'Café',         price:42000, cost:10400, base:31},
+  {id:'ilt', n:'Iced Latte',         c:'Café',         price:48000, cost:12600, base:26},
+  {id:'tar', n:'Lemon Tart',         c:'Pâtisserie',   price:55000, cost:17300, base:11},
+  {id:'opr', n:'Opéra Cake',         c:'Pâtisserie',   price:62000, cost:21000, base:8 },
+];
+const BAKERY=MENU.filter(m=>m.bakery);
+const CHANNELS=['Dine-in','Takeaway','Wholesale','Delivery'];
+const PAYMENTS=['QRIS','Kartu','Tunai','E-Wallet'];
+const CH_COLOR={'Dine-in':'#C9A24B','Takeaway':'#17827A','Wholesale':'#7C8B88','Delivery':'#3F8F6B'};
+const OPEN=7, CLOSE=21;
+/* kurva boulangerie: puncak pagi */
+const CURVE={7:.55,8:1.15,9:1.45,10:1.35,11:1.20,12:1.05,13:.95,14:.70,15:.60,16:.65,17:.70,18:.60,19:.50,20:.38,21:.22};
+const STOCK=[
+  {n:'Butter Prancis (82%)', u:'kg', stock:38,  par:60, usage:22, imported:true},
+  {n:'Terigu T55 impor',     u:'kg', stock:120, par:150,usage:55, imported:true},
+  {n:'Terigu lokal protein tinggi', u:'kg', stock:90, par:80, usage:30},
+  {n:'Ragi segar',           u:'kg', stock:2.1, par:4,  usage:1.2},
+  {n:'Cokelat batons',       u:'kg', stock:6.4, par:10, usage:3.1, imported:true},
+  {n:'Almond powder',        u:'kg', stock:3.0, par:6,  usage:1.8, imported:true},
+  {n:'Telur',                u:'btr',stock:640, par:900,usage:420},
+  {n:'Susu segar',           u:'ltr',stock:85,  par:120,usage:60},
+  {n:'Biji kopi single origin', u:'kg', stock:14, par:18, usage:6.5},
+  {n:'Salmon asap',          u:'kg', stock:2.2, par:5,  usage:1.6},
+];
+const CREW=[
+  {n:'Chef Julien','role':'Head Baker', shift:'02:00–10:00', hrs:8, rate:38000},
+  {n:'Andi',  role:'Baker',      shift:'02:00–10:00', hrs:8, rate:22000},
+  {n:'Rizky', role:'Baker',      shift:'03:00–11:00', hrs:8, rate:20000},
+  {n:'Nadia', role:'Pastry',     shift:'04:00–12:00', hrs:8, rate:24000},
+  {n:'Vina',  role:'Barista',    shift:'06:30–14:30', hrs:8, rate:18000},
+  {n:'Gilang',role:'Barista',    shift:'13:00–21:00', hrs:8, rate:18000},
+  {n:'Sasha', role:'Server',     shift:'06:30–14:30', hrs:8, rate:16000},
+  {n:'Bimo',  role:'Server',     shift:'13:00–21:00', hrs:8, rate:16000},
+  {n:'Dewi',  role:'Kasir',      shift:'06:30–14:30', hrs:8, rate:16500},
+  {n:'Aris',  role:'Kitchen',    shift:'06:00–14:00', hrs:8, rate:19000},
+  {n:'Tari',  role:'Kitchen',    shift:'12:00–20:00', hrs:8, rate:19000},
+];
+const BAKES=['05:00','09:30','13:30'];
+
+/* ================= STATE ================= */
+const S={orders:[],feed:[],prod:{},day:new Date(),outlet:'all',seq:2400,speed:1,source:'sim',
+  lastSync:new Date(),week:[],heat:[],seats:0,tick:0,eur:17850,butterKg:168000};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const idr=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
+const kidr=n=>n>=1e9?'Rp'+(n/1e9).toFixed(2)+'M':n>=1e6?'Rp'+(n/1e6).toFixed(1)+'jt':'Rp'+Math.round(n/1000)+'rb';
+const nowJ=()=>new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Jakarta'}));
+const hourNow=()=>Math.min(CLOSE,Math.max(OPEN,nowJ().getHours()));
+const outletsInView=()=>S.outlet==='all'?OUTLETS:OUTLETS.filter(o=>o.id===S.outlet);
+const scale=()=>outletsInView().length;
+
+function weightedItem(hour){
+  /* pagi didominasi viennoiserie+kopi, siang brasserie */
+  const w=MENU.map(m=>{
+    let k=m.base;
+    if(hour<11 && (m.c==='Viennoiserie'||m.c==='Café')) k*=1.9;
+    if(hour>=11 && m.c==='Brasserie') k*=2.2;
+    if(hour>=16 && m.c==='Pâtisserie') k*=1.8;
+    if(hour>=17 && m.c==='Boulangerie') k*=1.6;
+    return k;
+  });
+  const tot=w.reduce((a,b)=>a+b,0); let r=Math.random()*tot;
+  for(let i=0;i<MENU.length;i++){ r-=w[i]; if(r<=0) return MENU[i]; }
+  return MENU[0];
+}
+function makeOrder(outlet,hour,minute){
+  const roll=Math.random();
+  const ch=roll<.38?'Dine-in':roll<.78?'Takeaway':roll<.9?'Delivery':'Wholesale';
+  const n=ch==='Wholesale'?1:(Math.random()<.4?1:Math.random()<.78?2:3);
+  const lines=[],used=new Set();
+  for(let i=0;i<n;i++){
+    let m=weightedItem(hour); if(used.has(m.id)) m=weightedItem(hour); used.add(m.id);
+    const q=ch==='Wholesale'?Math.round(rnd(20,60)):(Math.random()<.72?1:2);
+    lines.push({id:m.id,n:m.n,q,price:ch==='Wholesale'?m.price*.68:m.price,cost:m.cost});
+  }
+  const t=new Date(S.day); t.setHours(hour,minute??Math.floor(rnd(0,59)),0,0);
+  return {no:S.seq++,o:outlet,ch,lines,
+    rev:lines.reduce((s,l)=>s+l.q*l.price,0), cost:lines.reduce((s,l)=>s+l.q*l.cost,0),
+    pay:ch==='Delivery'?'E-Wallet':ch==='Wholesale'?'Kartu':pick(['QRIS','QRIS','Kartu','Tunai']), t};
+}
+/* produksi harian per item (skala jumlah outlet) */
+function seedProd(){
+  S.prod={};
+  BAKERY.forEach(m=>{
+    const par=m.par*scale();
+    const baked=Math.round(par*rnd(.86,1.06));
+    S.prod[m.id]={baked, sold:0, batches:1, par};
+  });
+}
+function seedToday(){
+  S.orders=[]; S.seq=2400; seedProd();
+  const h=hourNow(), mNow=nowJ().getMinutes();
+  outletsInView().forEach(o=>{
+    for(let hr=OPEN;hr<=h;hr++){
+      let cnt=Math.round(rnd(4,7)*(CURVE[hr]||.4));
+      if(hr===h) cnt=Math.max(1,Math.round(cnt*(mNow/60)));
+      for(let i=0;i<cnt;i++) S.orders.push(makeOrder(o.id,hr,hr===h?Math.floor(rnd(0,Math.max(1,mNow))):null));
+    }
+  });
+  S.orders.sort((a,b)=>a.t-b.t);
+  syncProdFromOrders();
+  S.seats=Math.round(outletsInView().reduce((s,o)=>s+o.seats,0)*rnd(.35,.75));
+  /* 7 hari + heatmap */
+  const names=['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+  S.week=[];S.heat=[];
+  const today=S.orders.reduce((s,o)=>s+o.rev,0)||1;
+  for(let d=6;d>=0;d--){
+    const dt=new Date(S.day); dt.setDate(dt.getDate()-d);
+    const wd=dt.getDay(); const boost=(wd===0||wd===6)?1.45:(wd===5?1.15:1);
+    const row=[]; for(let hr=OPEN;hr<=CLOSE;hr++) row.push(Math.round((CURVE[hr]||.3)*boost*rnd(2.6e5,3.6e5)*scale()));
+    S.week.push({label:names[(wd+6)%7],date:dt.getDate(),total:d===0?today:row.reduce((a,b)=>a+b,0),
+      waste:Math.round(rnd(.02,.06)*row.reduce((a,b)=>a+b,0)*.32), today:d===0});
+    S.heat.push({label:names[(wd+6)%7],row});
+  }
+  S.lastSync=new Date();
+}
+function syncProdFromOrders(){
+  BAKERY.forEach(m=>{ if(S.prod[m.id]) S.prod[m.id].sold=0; });
+  S.orders.forEach(o=>o.lines.forEach(l=>{ if(S.prod[l.id]) S.prod[l.id].sold+=l.q; }));
+}
+
+/* ================= AGGREGATE ================= */
+function agg(){
+  const sel=S.outlet==='all'?null:S.outlet;
+  const os=sel?S.orders.filter(o=>o.o===sel):S.orders;
+  const rev=os.reduce((s,o)=>s+o.rev,0), cost=os.reduce((s,o)=>s+o.cost,0), tx=os.length;
+  const byHour={},byCh={},byPay={},byItem={},byOutlet={};
+  CHANNELS.forEach(c=>byCh[c]={rev:0,tx:0}); PAYMENTS.forEach(p=>byPay[p]=0);
+  MENU.forEach(m=>byItem[m.id]={...m,qty:0,rev:0,cm:0});
+  OUTLETS.forEach(o=>byOutlet[o.id]={rev:0,tx:0,cost:0});
+  os.forEach(o=>{
+    byHour[o.t.getHours()]=(byHour[o.t.getHours()]||0)+o.rev;
+    byCh[o.ch].rev+=o.rev; byCh[o.ch].tx++;
+    byPay[o.pay]=(byPay[o.pay]||0)+o.rev;
+    if(byOutlet[o.o]){byOutlet[o.o].rev+=o.rev;byOutlet[o.o].tx++;byOutlet[o.o].cost+=o.cost;}
+    o.lines.forEach(l=>{const it=byItem[l.id]; if(!it)return; it.qty+=l.q; it.rev+=l.q*l.price; it.cm+=l.q*(l.price-l.cost);});
+  });
+  const items=Object.values(byItem).filter(i=>i.qty>0).sort((a,b)=>b.cm-a.cm);
+  const labor=CREW.reduce((s,c)=>s+c.hrs*c.rate,0)*scale();
+  /* waste = pastry dipanggang tapi belum laku, dihargai at cost */
+  let wasteVal=0, bakedTot=0, soldTot=0;
+  BAKERY.forEach(m=>{const p=S.prod[m.id]; if(!p)return;
+    const left=Math.max(0,p.baked-p.sold); bakedTot+=p.baked; soldTot+=Math.min(p.sold,p.baked);
+    const endOfDay=hourNow()>=19; wasteVal+= endOfDay? left*m.cost : left*m.cost*.25;});
+  const sellThru=bakedTot?soldTot/bakedTot*100:0;
+  const seatsTot=outletsInView().reduce((s,o)=>s+o.seats,0);
+  return {rev,cost,tx,gm:rev?(rev-cost)/rev*100:0,atv:tx?rev/tx:0,byHour,byCh,byPay,byOutlet,items,labor,
+    cogsPct:rev?cost/rev*100:0, laborPct:rev?labor/rev*100:0, sellThru,
+    wastePct:rev?wasteVal/rev*100:0, wasteVal, seatsTot};
+}
+
+/* ================= SVG HELPERS ================= */
+const SVG=(w,h,i)=>`<svg viewBox="0 0 ${w} ${h}" width="100%" style="display:block;overflow:visible">${i}</svg>`;
+function sparkPath(v,w,h){ if(!v.length)return''; const mx=Math.max(...v,1),st=w/Math.max(1,v.length-1);
+  return v.map((x,i)=>`${i?'L':'M'}${(i*st).toFixed(1)},${(h-(x/mx)*h*.85-2).toFixed(1)}`).join(' ');}
+function tipOn(el,t){const T=document.getElementById('tip');
+  el.addEventListener('mousemove',e=>{T.textContent=t;T.style.opacity=1;T.style.left=(e.clientX+14)+'px';T.style.top=(e.clientY-30)+'px';});
+  el.addEventListener('mouseleave',()=>T.style.opacity=0);}
+
+/* ================= RENDER ================= */
+function renderOutlets(){
+  const a=agg();
+  document.getElementById('outlets').innerHTML=
+    `<button class="ot ${S.outlet==='all'?'on':''}" data-o="all">Semua Outlet <small>${OUTLETS.length}</small></button>`+
+    OUTLETS.map(o=>`<button class="ot ${S.outlet===o.id?'on':''}" data-o="${o.id}">${o.n}
+      <small>${o.city}</small></button>`).join('');
+  document.querySelectorAll('.ot').forEach(b=>b.onclick=()=>{ S.outlet=b.dataset.o; seedToday(); renderAll(); });
+}
+function renderKPI(a){
+  const y=a.rev*rnd(.9,1.05);
+  const sp=Object.values(a.byHour);
+  const c=[
+    {t:'Omzet Hari Ini',v:idr(a.rev),d:(a.rev-y)/Math.max(1,y)*100,s:'vs kemarin'},
+    {t:'Transaksi',v:a.tx,d:rnd(-5,13),s:'struk'},
+    {t:'Avg Check',v:idr(a.atv),d:rnd(-4,8),s:'per struk'},
+    {t:'Sell-through Pastry',v:a.sellThru.toFixed(1)+'%',d:a.sellThru-92,s:'target ≥92%',pp:1},
+    {t:'Waste Pastry',v:a.wastePct.toFixed(1)+'%',d:3-a.wastePct,s:'target ≤3% omzet',pp:1},
+    {t:'Gross Margin',v:a.gm.toFixed(1)+'%',d:a.gm-68,s:'target 68%',pp:1},
+  ];
+  document.getElementById('kpis').innerHTML=c.map(k=>`
+    <div class="card kpi"><h3>${k.t}</h3><div class="val">${k.v}</div>
+    <div class="sub"><span class="${k.d>=0?'up':'down'}">${k.d>=0?'▲':'▼'} ${Math.abs(k.d).toFixed(1)}${k.pp?'pp':'%'}</span><span>${k.s}</span></div>
+    <svg class="spark" width="92" height="34" viewBox="0 0 92 34"><path d="${sparkPath(sp,92,34)}" fill="none" stroke="var(--beurre)" stroke-width="1.7"/></svg></div>`).join('');
+}
+function nextBake(){
+  const h=nowJ().getHours()*60+nowJ().getMinutes();
+  for(const b of BAKES){ const [H,M]=b.split(':').map(Number); if(H*60+M>h){
+    const d=H*60+M-h; return `Fournée berikut ${b} · ${Math.floor(d/60)}j ${d%60}m lagi`; } }
+  return 'Fournée hari ini selesai — sisa rak masuk diskon sore';
+}
+function renderRack(){
+  document.getElementById('nextBake').textContent=nextBake();
+  document.getElementById('rack').innerHTML=BAKERY.map(m=>{
+    const p=S.prod[m.id]; if(!p) return '';
+    const left=Math.max(0,p.baked-p.sold);
+    const st=p.baked?Math.min(100,p.sold/p.baked*100):0;
+    const cap=Math.max(p.baked,p.par);
+    const wSold=p.sold/cap*100, wLeft=left/cap*100;
+    const low=left/Math.max(1,p.baked)<.15 && hourNow()<15;
+    return `<div class="tray ${low?'low':''}">
+      <div class="nm">${m.n}<span class="mono" style="font-size:11px;color:var(--mute)">${p.batches} fournée</span></div>
+      <div class="fr">${m.c} · ${idr(m.price)}</div>
+      <div class="nums">
+        <span>Dipanggang<b>${p.baked}</b></span>
+        <span>Terjual<b>${p.sold}</b></span>
+        <span>Sisa rak<b style="color:${low?'var(--confiture)':'var(--ink)'}">${left}</b></span>
+        <span>Sell-thru<b>${st.toFixed(0)}%</b></span>
+      </div>
+      <div class="st">
+        <i style="width:${wSold}%;background:var(--crust)"></i>
+        <i style="width:${wLeft}%;background:var(--beurre)"></i>
+      </div>
+      <div class="tray-foot">
+        <span>${low?'Risiko kehabisan sebelum jam ramai':'Nilai sisa '+idr(left*m.cost)+' at cost'}</span>
+        <button class="bake" data-id="${m.id}">+ Bake ${Math.round(m.par*scale()*.3)}</button>
+      </div></div>`;
+  }).join('');
+  document.querySelectorAll('.bake').forEach(b=>b.onclick=()=>{
+    const m=MENU.find(x=>x.id===b.dataset.id);
+    S.prod[m.id].baked+=Math.round(m.par*scale()*.3); S.prod[m.id].batches++;
+    renderRack(); renderKPI(agg());
+  });
+}
+function renderTicker(){
+  document.getElementById('ticker').innerHTML=S.feed.slice(0,14).map(f=>
+    `<div class="tk">#${f.no} <b>${f.ch}</b> · ${f.outlet} · ${f.items} · ${idr(f.rev)}</div>`).join('')
+    ||`<div class="tk" style="color:var(--mute)">Menunggu order pertama…</div>`;
+}
+function renderHourly(a){
+  const W=640,H=228,P=32;
+  const hrs=[]; for(let h=OPEN;h<=CLOSE;h++) hrs.push(h);
+  const today=hrs.map(h=>a.byHour[h]||0);
+  const avg=hrs.map(h=>(CURVE[h]||.3)*300000*scale());
+  const mx=Math.max(...today,...avg,1);
+  const x=i=>P+i*((W-P-8)/(hrs.length-1)), y=v=>H-24-(v/mx)*(H-50);
+  let g='';
+  [0,.5,1].forEach(p=>g+=`<line x1="${P}" x2="${W-8}" y1="${y(mx*p)}" y2="${y(mx*p)}" stroke="#DED5C4"/>
+    <text x="0" y="${y(mx*p)+3}" fill="#8C9490" font-size="9" font-family="IBM Plex Mono">${Math.round(mx*p/1000)}k</text>`);
+  const path=v=>v.map((val,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+  g+=`<path d="${path(avg)}" fill="none" stroke="#C6BCA6" stroke-width="2" stroke-dasharray="4 3"/>`;
+  g+=`<defs><linearGradient id="gb" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#C9A24B" stop-opacity=".35"/><stop offset="1" stop-color="#C9A24B" stop-opacity="0"/></linearGradient></defs>
+    <path d="${path(today)} L${x(hrs.length-1)},${H-24} L${x(0)},${H-24}Z" fill="url(#gb)"/>
+    <path d="${path(today)}" fill="none" stroke="#C9A24B" stroke-width="2.2"/>`;
+  today.forEach((v,i)=>{g+=`<circle class="hp" cx="${x(i)}" cy="${y(v)}" r="9" fill="transparent" data-t="Jam ${hrs[i]}:00 · ${idr(v)}"/>
+    <circle cx="${x(i)}" cy="${y(v)}" r="2.5" fill="#C9A24B"/>`;});
+  g+=hrs.map((h,i)=>`<text x="${x(i)}" y="${H-6}" fill="#8C9490" font-size="9" text-anchor="middle" font-family="IBM Plex Mono">${h}</text>`).join('');
+  document.getElementById('hourly').innerHTML=SVG(W,H,g);
+  document.querySelectorAll('.hp').forEach(c=>tipOn(c,c.dataset.t));
+}
+function renderHealth(a){
+  const rows=[
+    {n:'Sell-through pastry',v:a.sellThru.toFixed(1)+'%',t:'≥92%',p:a.sellThru,c:a.sellThru>=92?'var(--pistache)':'var(--confiture)'},
+    {n:'COGS',v:a.cogsPct.toFixed(1)+'%',t:'≤32%',p:Math.min(100,a.cogsPct/32*100),c:a.cogsPct<=32?'var(--pistache)':'var(--confiture)'},
+    {n:'Labor cost',v:a.laborPct.toFixed(1)+'%',t:'≤24%',p:Math.min(100,a.laborPct/24*100),c:a.laborPct<=24?'var(--pistache)':'var(--beurre)'},
+    {n:'Okupansi kursi',v:S.seats+'/'+a.seatsTot,t:'peak 85%',p:S.seats/Math.max(1,a.seatsTot)*100,c:'var(--crust)'},
+    {n:'Waste (nilai at cost)',v:idr(a.wasteVal),t:'≤3% omzet',p:Math.min(100,a.wastePct/3*100),c:a.wastePct<=3?'var(--pistache)':'var(--confiture)'},
+    {n:'Kontribusi wholesale',v:(a.byCh['Wholesale'].rev/Math.max(1,a.rev)*100).toFixed(1)+'%',t:'10–15%',p:a.byCh['Wholesale'].rev/Math.max(1,a.rev)*100/15*100,c:'var(--zinc)'},
+  ];
+  document.getElementById('health').innerHTML=rows.map(r=>`<div style="margin-bottom:13px">
+    <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px">
+      <span>${r.n}</span><span class="mono">${r.v} <span style="color:var(--mute)">/ ${r.t}</span></span></div>
+    <div class="bar"><i style="width:${Math.min(100,r.p)}%;background:${r.c}"></i></div></div>`).join('');
+}
+function renderChannel(a){
+  const tot=Object.values(a.byCh).reduce((s,c)=>s+c.rev,0)||1;
+  const R=52,C=66,circ=2*Math.PI*R; let off=0;
+  const arcs=CHANNELS.map(ch=>{const seg=circ*(a.byCh[ch].rev/tot);
+    const s=`<circle cx="${C}" cy="${C}" r="${R}" fill="none" stroke="${CH_COLOR[ch]}" stroke-width="16"
+      stroke-dasharray="${Math.max(0,seg-2)} ${circ-seg+2}" stroke-dashoffset="${-off}" transform="rotate(-90 ${C} ${C})"/>`;
+    off+=seg; return s;}).join('');
+  document.getElementById('channel').innerHTML=`<div style="display:flex;gap:14px;align-items:center">
+    <svg width="132" height="132" viewBox="0 0 132 132">${arcs}
+      <text x="66" y="62" text-anchor="middle" font-family="Fraunces" font-size="15" fill="#10302E">${kidr(tot)}</text>
+      <text x="66" y="78" text-anchor="middle" font-size="9" font-family="IBM Plex Mono" fill="#8C9490">${a.tx} TRX</text></svg>
+    <div style="flex:1">${CHANNELS.map(ch=>`<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:9px">
+      <span><b style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${CH_COLOR[ch]};margin-right:7px"></b>${ch}</span>
+      <span class="mono">${(a.byCh[ch].rev/tot*100).toFixed(0)}%</span></div>`).join('')}</div></div>
+    <p style="font-size:11.5px;color:var(--mute);margin-top:8px">Wholesale = suplai roti ke hotel & kafe partner (harga −32%, tapi volume pasti dan nol waste).</p>`;
+}
+function renderTables(a){
+  const pct=Math.round(S.seats/Math.max(1,a.seatsTot)*100);
+  const n=Math.min(24,Math.max(12,Math.round(a.seatsTot/4)));
+  let h=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px">`;
+  for(let i=1;i<=n;i++){const on=i<=Math.round(n*pct/100);
+    h+=`<div style="aspect-ratio:1;border-radius:3px;border:1px solid ${on?'var(--beurre)':'var(--line-2)'};
+      background:${on?'rgba(201,162,75,.20)':'transparent'};display:grid;place-items:center;font-size:9px;
+      font-family:'IBM Plex Mono';color:${on?'#8A6A1E':'var(--mute)'}">${i}</div>`;}
+  h+=`</div><div style="font-size:12.5px;color:var(--ink-2);line-height:1.9">
+    Kursi terisi <b class="mono">${S.seats}/${a.seatsTot}</b> (${pct}%)<br>
+    Rata-rata durasi duduk <b class="mono">64 menit</b> — brunch panjang, turnover rendah<br>
+    Takeaway ${(a.byCh['Takeaway'].tx/Math.max(1,a.tx)*100).toFixed(0)}% dari transaksi — jaga antrean counter tetap cepat</div>`;
+  document.getElementById('tables').innerHTML=h;
+}
+function renderAlerts(a){
+  const A=[];
+  BAKERY.forEach(m=>{const p=S.prod[m.id]; if(!p)return; const left=p.baked-p.sold;
+    if(left/Math.max(1,p.baked)<.12 && hourNow()<14) A.push({c:'crit',t:`${m.n} nyaris habis`,s:`Sisa ${left} pcs jam ${hourNow()}:00 — jadwalkan fournée susulan`});
+    if(hourNow()>=17 && left/Math.max(1,p.baked)>.3) A.push({c:'',t:`${m.n} overbake`,s:`Sisa ${left} pcs (${(left/p.baked*100).toFixed(0)}%) — turunkan par besok`});});
+  STOCK.filter(s=>s.stock<s.par*.6).slice(0,2).forEach(s=>A.push({c:'crit',t:`${s.n} di bawah par`,s:`Sisa ${s.stock} ${s.u} · par ${s.par}${s.imported?' · lead time impor 10–14 hari':''}`}));
+  if(a.cogsPct>32) A.push({c:'',t:`COGS ${a.cogsPct.toFixed(1)}% di atas target`,s:'Cek harga butter & yield adonan minggu ini'});
+  A.push({c:'ok',t:'Sinkronisasi POS normal',s:'Update terakhir '+S.lastSync.toLocaleTimeString('id-ID')});
+  document.getElementById('alerts').innerHTML=A.slice(0,5).map(x=>
+    `<div class="alert ${x.c}"><div><b>${x.t}</b><small>${x.s}</small></div></div>`).join('');
+}
+
+/* --- PRODUKSI --- */
+function renderProd(a){
+  document.getElementById('prodTable').innerHTML=`
+    <thead><tr><th>Item</th><th class="num">Bake</th><th class="num">Sold</th><th class="num">Sisa</th>
+    <th style="width:22%">Sell-through</th><th class="num">Waste (cost)</th></tr></thead>
+    <tbody>${BAKERY.map(m=>{const p=S.prod[m.id]; const left=Math.max(0,p.baked-p.sold);
+      const st=p.baked?p.sold/p.baked*100:0;
+      const c=st>=92?'var(--pistache)':st>=80?'var(--beurre)':'var(--confiture)';
+      return `<tr><td>${m.n}<div style="color:var(--mute);font-size:10.5px">par ${p.par} · ${p.batches} fournée</div></td>
+        <td class="num">${p.baked}</td><td class="num">${p.sold}</td><td class="num">${left}</td>
+        <td><div class="bar"><i style="width:${Math.min(100,st)}%;background:${c}"></i></div>
+          <span class="mono" style="font-size:10.5px;color:${c}">${st.toFixed(0)}%</span></td>
+        <td class="num">${idr(left*m.cost)}</td></tr>`;}).join('')}</tbody>`;
+
+  document.getElementById('planner').innerHTML=BAKERY.map(m=>{
+    const p=S.prod[m.id]; const st=p.baked?p.sold/p.baked*100:0;
+    let rec=p.baked, note='pertahankan';
+    if(st>=98){rec=Math.round(p.baked*1.15); note='sering habis — tambah 15%';}
+    else if(st<82){rec=Math.round(p.baked*.85); note='overbake — pangkas 15%';}
+    const delta=rec-p.baked;
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)">
+      <div><b style="font-size:13px">${m.n}</b><div style="font-size:11px;color:var(--mute)">${note}</div></div>
+      <div class="mono" style="text-align:right;font-size:12.5px">${p.baked} → <b>${rec}</b>
+        <div style="font-size:11px;color:${delta>0?'var(--pistache)':delta<0?'var(--confiture)':'var(--mute)'}">${delta>0?'+':''}${delta} pcs</div></div></div>`;
+  }).join('')+`<p style="font-size:11.5px;color:var(--mute);margin-top:10px">Penyesuaian par bertahap ±15%/hari agar tim produksi tidak kaget dan bahan tetap terserap.</p>`;
+
+  /* kurva pastry per jam */
+  const W=330,H=160,hrs=[];for(let h=OPEN;h<=CLOSE;h++)hrs.push(h);
+  const q={}; S.orders.forEach(o=>o.lines.forEach(l=>{ if(S.prod[l.id]) q[o.t.getHours()]=(q[o.t.getHours()]||0)+l.q; }));
+  const vals=hrs.map(h=>q[h]||0), mx=Math.max(...vals,1), bw=W/hrs.length;
+  let g='';
+  vals.forEach((v,i)=>{const hh=(v/mx)*(H-34);
+    g+=`<rect class="pc" x="${i*bw+3}" y="${H-20-hh}" width="${bw-6}" height="${hh}" rx="2"
+      fill="${hrs[i]<11?'#C9A24B':'#C6BCA6'}" data-t="Jam ${hrs[i]}:00 · ${v} pcs"/>`;});
+  g+=hrs.filter((h,i)=>i%2===0).map((h,i)=>`<text x="${hrs.indexOf(h)*bw+bw/2}" y="${H-6}" text-anchor="middle" fill="#8C9490" font-size="9" font-family="IBM Plex Mono">${h}</text>`).join('');
+  document.getElementById('pastryCurve').innerHTML=SVG(W,H,g)+
+    `<p style="font-size:11.5px;color:var(--mute);margin-top:8px">${(vals.slice(0,4).reduce((a,b)=>a+b,0)/Math.max(1,vals.reduce((a,b)=>a+b,0))*100).toFixed(0)}% pastry habis sebelum jam 11 — fournée 05:00 harus jadi yang terbesar.</p>`;
+  document.querySelectorAll('.pc').forEach(c=>tipOn(c,c.dataset.t));
+
+  /* waste 7 hari */
+  const W2=330,H2=160,mxw=Math.max(...S.week.map(d=>d.waste),1),bw2=W2/S.week.length;
+  let g2='';
+  S.week.forEach((d,i)=>{const h=(d.waste/mxw)*(H2-36);
+    g2+=`<rect class="wk" x="${i*bw2+7}" y="${H2-22-h}" width="${bw2-14}" height="${h}" rx="3"
+      fill="${d.today?'#B23A2E':'#C6BCA6'}" data-t="${d.label} ${d.date} · waste ${idr(d.waste)}"/>
+      <text x="${i*bw2+bw2/2}" y="${H2-7}" text-anchor="middle" fill="#8C9490" font-size="9" font-family="IBM Plex Mono">${d.label}</text>`;});
+  document.getElementById('wasteWeek').innerHTML=SVG(W2,H2,g2)+
+    `<p style="font-size:11.5px;color:var(--mute);margin-top:8px">Total waste 7 hari <b class="mono">${idr(S.week.reduce((s,d)=>s+d.waste,0))}</b> · setara ${idr(S.week.reduce((s,d)=>s+d.waste,0)*4.3)}/bulan.</p>`;
+  document.querySelectorAll('.wk').forEach(c=>tipOn(c,c.dataset.t));
+
+  /* diskon */
+  const left=BAKERY.reduce((s,m)=>s+Math.max(0,S.prod[m.id].baked-S.prod[m.id].sold),0);
+  const val=BAKERY.reduce((s,m)=>s+Math.max(0,S.prod[m.id].baked-S.prod[m.id].sold)*m.price,0);
+  document.getElementById('discount').innerHTML=`
+    <div style="background:var(--flour);border-radius:6px;padding:13px;margin-bottom:12px">
+      <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700">Sisa rak saat ini</div>
+      <div style="font-family:Fraunces;font-size:26px;font-weight:600">${left} pcs</div>
+      <div style="font-size:11.5px;color:var(--mute)">Nilai retail ${idr(val)}</div></div>
+    <table><tr><td>Jual normal s/d 17:00</td><td class="num">${idr(val)}</td></tr>
+    <tr><td>Diskon 30% jam 17–19</td><td class="num">${idr(val*.7)}</td></tr>
+    <tr><td>Bundle “Boîte Surprise” 50%</td><td class="num">${idr(val*.5)}</td></tr>
+    <tr><td>Dibuang (nilai hilang)</td><td class="num" style="color:var(--confiture)">${idr(0)}</td></tr></table>
+    <p style="font-size:11.5px;color:var(--mute);margin-top:10px">Selama harga diskon masih di atas cost (rata-rata 31% harga jual), menjual sisa selalu lebih baik daripada membuang — asal diskon tidak dimulai terlalu awal sehingga pelanggan menunda beli.</p>`;
+}
+
+/* --- JARINGAN --- */
+function renderNet(){
+  const all=S.orders;
+  const rows=OUTLETS.map(o=>{
+    const os=all.filter(x=>x.o===o.id);
+    const rev=os.reduce((s,x)=>s+x.rev,0), cost=os.reduce((s,x)=>s+x.cost,0);
+    return {...o, rev, tx:os.length, atv:os.length?rev/os.length:0, gm:rev?(rev-cost)/rev*100:0,
+      rps: rev/o.seats};
+  }).sort((a,b)=>b.rev-a.rev);
+  const mx=Math.max(...rows.map(r=>r.rev),1);
+  document.getElementById('netTable').innerHTML=`
+    <thead><tr><th>Outlet</th><th style="width:24%">Omzet</th><th class="num">Trx</th><th class="num">Avg check</th>
+    <th class="num">GM</th><th class="num">Omzet/kursi</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr data-o="${r.id}" style="cursor:pointer">
+      <td><b>${r.n}</b><div style="color:var(--mute);font-size:10.5px">${r.city} · ${r.seats} kursi</div></td>
+      <td><div class="bar"><i style="width:${r.rev/mx*100}%;background:var(--beurre)"></i></div>
+        <span class="mono" style="font-size:11px">${idr(r.rev)}</span></td>
+      <td class="num">${r.tx}</td><td class="num">${idr(r.atv)}</td>
+      <td class="num" style="color:${r.gm>=68?'var(--pistache)':'var(--confiture)'}">${r.gm.toFixed(1)}%</td>
+      <td class="num">${idr(r.rps)}</td></tr>`).join('')}</tbody>`;
+  document.querySelectorAll('#netTable tr[data-o]').forEach(tr=>tr.onclick=()=>{
+    S.outlet=tr.dataset.o; seedToday(); renderAll();
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.p==='ops'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-ops'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  /* week */
+  const W=380,H=170,mxw=Math.max(...S.week.map(d=>d.total),1),bw=W/S.week.length;
+  let g='';
+  S.week.forEach((d,i)=>{const h=(d.total/mxw)*(H-40);
+    g+=`<rect class="w7" x="${i*bw+9}" y="${H-24-h}" width="${bw-18}" height="${h}" rx="3"
+      fill="${d.today?'#C9A24B':'#C6BCA6'}" data-t="${d.label} ${d.date} · ${idr(d.total)}"/>
+      <text x="${i*bw+bw/2}" y="${H-8}" text-anchor="middle" fill="${d.today?'#8A6A1E':'#8C9490'}" font-size="9.5" font-family="IBM Plex Mono">${d.label}</text>`;});
+  const avg=S.week.reduce((s,d)=>s+d.total,0)/7;
+  document.getElementById('week').innerHTML=SVG(W,H,g)+
+    `<p style="font-size:11.5px;color:var(--mute);margin-top:8px">Rata-rata <b class="mono">${idr(avg)}</b>/hari · proyeksi bulan <b class="mono">${kidr(avg*30)}</b> · akhir pekan +45%.</p>`;
+  document.querySelectorAll('.w7').forEach(c=>tipOn(c,c.dataset.t));
+  /* heatmap */
+  const Wh=380, cell=(Wh-40)/(CLOSE-OPEN+1), Hh=S.heat.length*26+24;
+  const flat=S.heat.flatMap(r=>r.row), mh=Math.max(...flat,1);
+  let gh='';
+  S.heat.forEach((r,ri)=>{
+    gh+=`<text x="0" y="${ri*26+36}" fill="#8C9490" font-size="9.5" font-family="IBM Plex Mono">${r.label}</text>`;
+    r.row.forEach((v,ci)=>{gh+=`<rect class="hc" x="${36+ci*cell}" y="${ri*26+22}" width="${cell-2}" height="20" rx="2"
+      fill="#C9A24B" fill-opacity="${(.06+v/mh*.86).toFixed(2)}" data-t="${r.label} jam ${OPEN+ci}:00 · ${idr(v)}"/>`;});
+  });
+  for(let h=OPEN;h<=CLOSE;h+=2) gh+=`<text x="${36+(h-OPEN)*cell}" y="14" fill="#8C9490" font-size="9" font-family="IBM Plex Mono">${h}</text>`;
+  document.getElementById('heatmap').innerHTML=`<h3>Peta jam ramai (7 hari × jam)</h3>`+SVG(Wh,Hh,gh);
+  document.querySelectorAll('.hc').forEach(c=>tipOn(c,c.dataset.t));
+}
+
+/* --- MENU --- */
+function classify(i,mq,mm){const q=i.qty>=mq,m=(i.price-i.cost)>=mm;
+  return q&&m?['star','Star']:q&&!m?['plow','Plowhorse']:!q&&m?['puzz','Puzzle']:['dog','Dog'];}
+function renderMenu(a){
+  const it=a.items;
+  if(!it.length){document.getElementById('quad').innerHTML='<p style="color:var(--mute)">Belum ada penjualan.</p>';return;}
+  const qs=it.map(i=>i.qty).sort((x,y)=>x-y), ms=it.map(i=>i.price-i.cost).sort((x,y)=>x-y);
+  const mq=qs[Math.floor(qs.length/2)], mm=ms[Math.floor(ms.length/2)];
+  const W=520,H=380,P=44,mxQ=Math.max(...qs)*1.15,mxM=Math.max(...ms)*1.15;
+  const x=v=>P+(v/mxQ)*(W-P-20), y=v=>H-P-(v/mxM)*(H-P-24);
+  const col={star:'#C9A24B',plow:'#3F8F6B',puzz:'#7C8B88',dog:'#B23A2E'};
+  let g=`<rect x="${P}" y="24" width="${W-P-20}" height="${H-P-24}" fill="none" stroke="#DED5C4"/>
+    <line x1="${x(mq)}" x2="${x(mq)}" y1="24" y2="${H-P}" stroke="#C6BCA6" stroke-dasharray="4 4"/>
+    <line x1="${P}" x2="${W-20}" y1="${y(mm)}" y2="${y(mm)}" stroke="#C6BCA6" stroke-dasharray="4 4"/>
+    <text x="${W-24}" y="${H-P-8}" text-anchor="end" fill="#DED5C4" font-family="Fraunces" font-size="14" font-weight="900">STAR</text>
+    <text x="${P+8}" y="${H-P-8}" fill="#DED5C4" font-family="Fraunces" font-size="14" font-weight="900">PUZZLE</text>
+    <text x="${W-24}" y="${H-16}" text-anchor="end" fill="#DED5C4" font-family="Fraunces" font-size="14" font-weight="900">PLOWHORSE</text>
+    <text x="${P+8}" y="${H-16}" fill="#DED5C4" font-family="Fraunces" font-size="14" font-weight="900">DOG</text>
+    <text x="${W/2}" y="${H-4}" text-anchor="middle" fill="#8C9490" font-size="9.5" font-family="IBM Plex Mono">PORSI TERJUAL →</text>`;
+  it.forEach(i=>{const [k]=classify(i,mq,mm),m=i.price-i.cost,r=6+Math.min(11,i.cm/120000);
+    g+=`<circle class="qp" cx="${x(i.qty)}" cy="${y(m)}" r="${r}" fill="${col[k]}" fill-opacity=".7" stroke="${col[k]}"
+      data-t="${i.n} · ${i.qty} pcs · CM ${idr(m)}/pcs · total ${idr(i.cm)}"/>`;});
+  document.getElementById('quad').innerHTML=SVG(W,H,g);
+  document.querySelectorAll('.qp').forEach(c=>tipOn(c,c.dataset.t));
+  document.getElementById('menuTable').innerHTML=`
+    <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">CM/pcs</th><th class="num">Total CM</th><th>Kelas</th></tr></thead>
+    <tbody>${it.map(i=>{const [k,l]=classify(i,mq,mm);
+      return `<tr><td>${i.n}<div style="color:var(--mute);font-size:10.5px">${i.c} · ${idr(i.price)}</div></td>
+      <td class="num">${i.qty}</td><td class="num">${idr(i.price-i.cost)}</td><td class="num">${idr(i.cm)}</td>
+      <td><span class="tag ${k}">${l}</span></td></tr>`;}).join('')}</tbody>`;
+}
+
+/* --- COST / BUTTER INDEX --- */
+function renderCost(a){
+  const eur=S.eur, butterEur=S.butterKg/eur;
+  /* croissant: 55 gr butter, 60 gr terigu */
+  const bPerCrs=0.055*S.butterKg, fPerCrs=0.060*15500, other=2800;
+  const cost=bPerCrs+fPerCrs+other;
+  const price=MENU[0].price, cm=price-cost, cogs=cost/price*100;
+  document.getElementById('butter').innerHTML=`
+    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:130px;background:var(--flour);border-radius:6px;padding:12px">
+        <h3>EUR / IDR</h3><div style="font-family:Fraunces;font-size:23px;font-weight:600">${Math.round(eur).toLocaleString('id-ID')}</div></div>
+      <div style="flex:1;min-width:130px;background:var(--flour);border-radius:6px;padding:12px">
+        <h3>Butter / kg</h3><div style="font-family:Fraunces;font-size:23px;font-weight:600">${idr(S.butterKg)}</div>
+        <div style="font-size:11px;color:var(--mute)">€${butterEur.toFixed(2)}/kg</div></div>
+      <div style="flex:1;min-width:130px;background:var(--flour);border-radius:6px;padding:12px">
+        <h3>COGS Croissant</h3><div style="font-family:Fraunces;font-size:23px;font-weight:600;color:${cogs<=32?'var(--pistache)':'var(--confiture)'}">${cogs.toFixed(1)}%</div>
+        <div style="font-size:11px;color:var(--mute)">CM ${idr(cm)}/pcs</div></div>
+    </div>
+    <label style="font-size:12.5px;display:block;margin-bottom:6px">Uji skenario kurs: <b class="mono" id="eurLbl">${Math.round(eur).toLocaleString('id-ID')}</b></label>
+    <input type="range" id="eurSlider" min="15000" max="22000" step="50" value="${eur}" style="width:100%;accent-color:var(--beurre)">
+    <table style="margin-top:14px">
+      <thead><tr><th>Komponen 1 croissant</th><th class="num">Biaya</th><th class="num">% harga jual</th></tr></thead>
+      <tbody>
+        <tr><td>Butter Prancis 55 gr</td><td class="num">${idr(bPerCrs)}</td><td class="num">${(bPerCrs/price*100).toFixed(1)}%</td></tr>
+        <tr><td>Terigu T55 60 gr</td><td class="num">${idr(fPerCrs)}</td><td class="num">${(fPerCrs/price*100).toFixed(1)}%</td></tr>
+        <tr><td>Ragi, gula, garam, gas, kemasan</td><td class="num">${idr(other)}</td><td class="num">${(other/price*100).toFixed(1)}%</td></tr>
+        <tr><td><b>Total COGS</b></td><td class="num"><b>${idr(cost)}</b></td><td class="num"><b>${cogs.toFixed(1)}%</b></td></tr>
+      </tbody></table>
+    <p style="font-size:12px;color:var(--ink-2);margin-top:10px;line-height:1.8">
+      Butter menyumbang <b>${(bPerCrs/cost*100).toFixed(0)}%</b> dari COGS croissant. Setiap kenaikan kurs EUR 5% menaikkan COGS ±${idr(bPerCrs*.05)}/pcs
+      — pada volume ${(S.prod['crs']?.baked||0)} pcs/hari itu ${idr(bPerCrs*.05*(S.prod['crs']?.baked||0)*30)}/bulan.
+      Lindungi dengan kontrak butter 3 bulan atau blend 20% butter lokal pada laminasi non-signature.</p>`;
+  const sl=document.getElementById('eurSlider');
+  sl.oninput=e=>{ const v=+e.target.value; S.butterKg=Math.round(168000*(v/17850)); S.eur=v; renderCost(agg()); };
+
+  document.getElementById('stockTable').innerHTML=`
+    <thead><tr><th>Bahan</th><th class="num">Stok</th><th class="num">Par</th><th style="width:28%">Level</th><th class="num">Sisa hari</th></tr></thead>
+    <tbody>${STOCK.map(s=>{const p=Math.min(100,s.stock/s.par*100),d=(s.stock/Math.max(.1,s.usage)).toFixed(1);
+      const c=p<50?'var(--confiture)':p<100?'var(--beurre)':'var(--pistache)';
+      return `<tr><td>${s.n}${s.imported?'<span class="tag puzz" style="margin-left:6px">impor</span>':''}</td>
+        <td class="num">${s.stock} ${s.u}</td><td class="num" style="color:var(--mute)">${s.par}</td>
+        <td><div class="bar"><i style="width:${p}%;background:${c}"></i></div></td>
+        <td class="num" style="color:${d<2?'var(--confiture)':'var(--ink)'}">${d} hr</td></tr>`;}).join('')}</tbody>`;
+
+  const cats=['Viennoiserie','Boulangerie','Brasserie','Café','Pâtisserie'];
+  const byCat={}; cats.forEach(c=>byCat[c]={rev:0,cost:0});
+  a.items.forEach(i=>{byCat[i.c].rev+=i.rev; byCat[i.c].cost+=i.qty*i.cost;});
+  document.getElementById('cogs').innerHTML=`<div class="cols3">`+cats.map(c=>{
+    const p=byCat[c].rev?byCat[c].cost/byCat[c].rev*100:0;
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px">
+        <span>${c}</span><span class="mono">${p.toFixed(1)}%</span></div>
+      <div class="bar"><i style="width:${Math.min(100,p/50*100)}%;background:${p<=32?'var(--pistache)':'var(--confiture)'}"></i></div>
+      <div style="font-size:11px;color:var(--mute);margin-top:4px">Omzet ${idr(byCat[c].rev)}</div></div>`;}).join('')+
+    `</div><p style="font-size:12px;color:var(--ink-2);margin-top:8px">Café adalah mesin margin (COGS ±25%) yang menyubsidi Brasserie (COGS ±37%). Rasio sehat: setiap 1 piring brunch harus ditemani minimal 1 minuman — pastikan server selalu menawarkan kopi lebih dulu.</p>`;
+}
+
+/* --- CREW --- */
+function renderCrew(a){
+  const hrs=CREW.reduce((s,c)=>s+c.hrs,0)*scale();
+  const splh=a.rev/Math.max(1,hrs);
+  document.getElementById('crewTable').innerHTML=`
+    <thead><tr><th>Kru</th><th>Peran</th><th>Shift</th><th class="num">Jam</th><th class="num">Upah/hari</th></tr></thead>
+    <tbody>${CREW.map(c=>`<tr><td>${c.n}</td><td style="color:var(--ink-2)">${c.role}</td>
+      <td class="mono">${c.shift}</td><td class="num">${c.hrs}</td><td class="num">${idr(c.hrs*c.rate)}</td></tr>`).join('')}
+      <tr><td colspan="3"><b>Total per outlet</b></td><td class="num"><b>${CREW.reduce((s,c)=>s+c.hrs,0)}</b></td>
+      <td class="num"><b>${idr(CREW.reduce((s,c)=>s+c.hrs*c.rate,0))}</b></td></tr></tbody>`;
+  document.getElementById('labor').innerHTML=`
+    <div style="background:var(--flour);border-radius:6px;padding:14px;margin-bottom:14px">
+      <h3>Sales per labor hour</h3>
+      <div style="font-family:Fraunces;font-size:26px;font-weight:600;color:${splh>=150000?'var(--pistache)':'var(--beurre)'}">${idr(splh)}</div>
+      <div style="font-size:11.5px;color:var(--mute);margin-top:4px">Benchmark boulangerie premium: ≥ Rp150.000/jam kerja</div></div>
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px">
+        <span>Labor cost ratio</span><span class="mono">${a.laborPct.toFixed(1)}% / ≤24%</span></div>
+      <div class="bar"><i style="width:${Math.min(100,a.laborPct/24*100)}%;background:${a.laborPct<=24?'var(--pistache)':'var(--confiture)'}"></i></div></div>
+    <p style="font-size:12.5px;color:var(--ink-2);line-height:1.85">
+      Tim produksi (baker + pastry, 4 orang) adalah biaya tetap: mereka dibayar sama baik penjualan ramai maupun sepi.
+      Satu-satunya cara menurunkan labor ratio produksi adalah menaikkan output per fournée — lewat <b>wholesale</b> ke hotel & kafe
+      yang menyerap kapasitas oven di jam kosong, bukan dengan memotong jam baker.</p>`;
+}
+
+/* --- DATA --- */
+function renderIntegrations(){
+  const it=[
+    {n:'POS Kasir (semua outlet)',s:S.source==='sim'?'Simulasi aktif':'Google Sheets',ok:true,d:'Order, item, kanal, metode bayar'},
+    {n:'Google Sheets',s:S.source==='sheet'?'Tersambung':'Belum tersambung',ok:S.source==='sheet',d:'Sumber data utama saat dihubungkan'},
+    {n:'Papan produksi (fournée)',s:'Aktif',ok:true,d:'Bake, sold, sisa rak, sell-through'},
+    {n:'Inventori bahan',s:'Manual via sheet',ok:false,d:'Butter, terigu, lead time impor'},
+    {n:'Wholesale B2B',s:'Rekap harian',ok:false,d:'Masukkan sebagai channel = Wholesale'},
+    {n:'Kurs EUR/IDR',s:'Input manual',ok:false,d:'Dipakai Butter Index — bisa disambung ke API kurs'},
+  ];
+  document.getElementById('integrations').innerHTML=it.map(i=>`
+    <div class="alert ${i.ok?'ok':''}"><div style="flex:1">
+      <div style="display:flex;justify-content:space-between"><b>${i.n}</b>
+      <span class="mono" style="font-size:11px;color:${i.ok?'var(--pistache)':'var(--mute)'}">${i.s}</span></div>
+      <small>${i.d}</small></div></div>`).join('')+
+    `<p style="font-size:11.5px;color:var(--mute);margin-top:10px">Sinkron terakhir: ${S.lastSync.toLocaleString('id-ID')}</p>`;
+}
+
+function renderAll(){
+  const a=agg();
+  renderOutlets(); renderKPI(a); renderRack(); renderTicker(); renderHourly(a); renderHealth(a);
+  renderChannel(a); renderTables(a); renderAlerts(a); renderProd(a); renderNet(); renderMenu(a);
+  renderCost(a); renderCrew(a); renderIntegrations();
+}
+
+/* ================= SHEETS ================= */
+function parseCSV(text){
+  const rows=text.trim().split(/\r?\n/).map(r=>r.split(','));
+  const head=rows.shift().map(h=>h.trim().toLowerCase());
+  ['timestamp','item','qty','price','cost'].forEach(n=>{ if(!head.includes(n)) throw new Error('Kolom "'+n+'" tidak ditemukan'); });
+  const grp={};
+  rows.forEach(r=>{
+    const o={}; head.forEach((h,j)=>o[h]=(r[j]||'').trim());
+    const key=o.timestamp+'|'+(o.outlet||'x')+'|'+(o.channel||'x');
+    const oid=(OUTLETS.find(x=>x.n.toLowerCase()===(o.outlet||'').toLowerCase())||OUTLETS[0]).id;
+    if(!grp[key]) grp[key]={no:3000+Object.keys(grp).length,o:oid,
+      ch:CHANNELS.includes(o.channel)?o.channel:'Takeaway',lines:[],rev:0,cost:0,
+      pay:PAYMENTS.includes(o.payment)?o.payment:'QRIS',t:new Date(o.timestamp.replace(' ','T'))};
+    const q=+o.qty||1,p=+o.price||0,c=+o.cost||0;
+    const m=MENU.find(x=>x.n.toLowerCase()===o.item.toLowerCase());
+    grp[key].lines.push({id:m?m.id:'crs',n:o.item,q,price:p,cost:c});
+    grp[key].rev+=q*p; grp[key].cost+=q*c;
+  });
+  const out=Object.values(grp).filter(o=>!isNaN(o.t));
+  if(!out.length) throw new Error('Tidak ada baris valid');
+  return out.sort((a,b)=>a.t-b.t);
+}
+async function connectSheet(){
+  const url=document.getElementById('csvUrl').value.trim(), st=document.getElementById('connStatus');
+  if(!url){st.innerHTML=`<div class="alert crit"><div><b>Link kosong</b><small>Tempel URL CSV hasil Publish to web.</small></div></div>`;return;}
+  st.innerHTML=`<div class="alert"><div><b>Menghubungkan…</b><small>Mengambil data.</small></div></div>`;
+  try{
+    const res=await fetch(url); if(!res.ok) throw new Error('HTTP '+res.status);
+    S.orders=parseCSV(await res.text()); S.source='sheet'; S.lastSync=new Date();
+    syncProdFromOrders();
+    document.getElementById('srcLabel').textContent='Live · Google Sheets';
+    st.innerHTML=`<div class="alert ok"><div><b>Tersambung</b><small>${S.orders.length} order terbaca · ${S.lastSync.toLocaleTimeString('id-ID')}</small></div></div>`;
+    renderAll();
+  }catch(e){
+    st.innerHTML=`<div class="alert crit"><div><b>Gagal menarik data</b><small>${e.message}. Pastikan sheet sudah Publish to web sebagai CSV (link berakhiran output=csv).</small></div></div>`;
+  }
+}
+
+/* ================= WIRING ================= */
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('.tab'); if(!b) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));
+});
+document.getElementById('speed').onchange=e=>S.speed=+e.target.value;
+document.getElementById('refresh').onclick=()=>{ if(S.source==='sheet') connectSheet(); else {seedToday(); renderAll();} };
+document.getElementById('connect').onclick=connectSheet;
+document.getElementById('disconnect').onclick=()=>{
+  S.source='sim'; document.getElementById('srcLabel').textContent='Live · Simulasi POS';
+  document.getElementById('connStatus').innerHTML=`<div class="alert"><div><b>Kembali ke simulasi</b><small>Dashboard memakai data POS simulasi.</small></div></div>`;
+  seedToday(); renderAll();
+};
+setInterval(()=>{document.getElementById('clock').textContent=nowJ().toLocaleTimeString('id-ID',{hour12:false});},1000);
+setInterval(()=>{
+  if(S.source!=='sim'||!S.speed) return;
+  S.tick++;
+  const h=hourNow(), p=(CURVE[h]||.3)*.3*S.speed*Math.min(3,scale());
+  if(Math.random()<p){
+    const o=makeOrder(pick(outletsInView()).id,h,nowJ().getMinutes());
+    o.t=new Date(); S.orders.push(o);
+    o.lines.forEach(l=>{ if(S.prod[l.id]) S.prod[l.id].sold+=l.q; });
+    S.feed.unshift({no:o.no,ch:o.ch,outlet:OUTLETS.find(x=>x.id===o.o).n,
+      items:o.lines.map(l=>l.q+'× '+l.n.split(' ')[0]).join(', '),rev:o.rev});
+    S.feed=S.feed.slice(0,20);
+    renderTicker(); renderRack(); renderKPI(agg());
+  }
+  if(S.tick%15===0){ const a=agg();
+    S.seats=Math.max(4,Math.min(a.seatsTot,S.seats+Math.round(rnd(-3,3)))); renderTables(a); renderHealth(a); }
+},2000);
+let auto=null;
+function setAuto(){clearInterval(auto); const s=+document.getElementById('interval').value;
+  if(s>0) auto=setInterval(()=>{ if(S.source==='sheet') connectSheet(); },s*1000);}
+document.getElementById('interval').onchange=setAuto;
+seedToday(); renderAll(); setAuto();
+setInterval(()=>{ if(S.source==='sim'){ renderHourly(agg()); renderAlerts(agg()); } },20000);
+</script>
+</body>
+</html>
